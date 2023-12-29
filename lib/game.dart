@@ -11,7 +11,6 @@ import 'package:darkness_dungeon/enemies/mini_boss.dart';
 import 'package:darkness_dungeon/interface/knight_interface.dart';
 import 'package:darkness_dungeon/main.dart';
 import 'package:darkness_dungeon/npc/kid.dart';
-import 'package:darkness_dungeon/npc/wizard_npc.dart';
 import 'package:darkness_dungeon/player/knight.dart';
 import 'package:darkness_dungeon/util/sounds.dart';
 import 'package:darkness_dungeon/widgets/game_controller.dart';
@@ -91,7 +90,6 @@ class _GameState extends State<Game> {
             'door': (p) => Door(p.position, p.size),
             'torch': (p) => Torch(p.position),
             'potion': (p) => PotionLife(p.position, 30),
-            'wizard': (p) => WizardNPC(p.position),
             'spikes': (p) => Spikes(p.position),
             'key': (p) => DoorKey(p.position),
             'kid': (p) => Kid(p.position),
