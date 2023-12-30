@@ -2,15 +2,10 @@ import 'dart:async' as async;
 
 import 'package:bonfire/bonfire.dart';
 import 'package:darkness_dungeon/game.dart';
-import 'package:darkness_dungeon/util/custom_sprite_animation_widget.dart';
-import 'package:darkness_dungeon/util/enemy_sprite_sheet.dart';
 import 'package:darkness_dungeon/util/localization/strings_location.dart';
-import 'package:darkness_dungeon/util/player_sprite_sheet.dart';
 import 'package:darkness_dungeon/util/sounds.dart';
-import 'package:darkness_dungeon/widgets/custom_radio.dart';
 import 'package:flame_splash_screen/flame_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -19,15 +14,7 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   bool showSplash = true;
-  int currentPosition = 0;
   late async.Timer _timer;
-  List<Future<SpriteAnimation>> sprites = [
-    PlayerSpriteSheet.idleRight(),
-    EnemySpriteSheet.goblinIdleRight(),
-    EnemySpriteSheet.impIdleRight(),
-    EnemySpriteSheet.miniBossIdleRight(),
-    EnemySpriteSheet.bossIdleRight(),
-  ];
 
   @override
   void dispose() {
@@ -47,31 +34,26 @@ class _MenuState extends State<Menu> {
   Widget buildMenu() {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                "Darkness Dungeon",
-                style: TextStyle(
-                    color: Colors.white, fontFamily: 'Normal', fontSize: 30.0),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              if (sprites.isNotEmpty)
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CustomSpriteAnimationWidget(
-                    animation: sprites[currentPosition],
-                  ),
-                ),
-              SizedBox(
-                height: 30.0,
-              ),
-              SizedBox(
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/main_menu.png',
+              alignment: Alignment.center,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            top: 100,
+            child: Image.asset(
+              'assets/logo.png',
+              scale: 2,
+            ),
+          ),
+          Positioned(
+              bottom: 100,
+              child: SizedBox(
                 width: 150,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -79,14 +61,14 @@ class _MenuState extends State<Menu> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    minimumSize: Size(100, 40), //////// HERE
+                    minimumSize: Size(100, 40),
                   ),
                   child: Text(
                     getString('play_cap'),
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF444444),
                       fontFamily: 'Normal',
-                      fontSize: 17.0,
+                      fontSize: 24.0,
                     ),
                   ),
                   onPressed: () {
@@ -96,45 +78,8 @@ class _MenuState extends State<Menu> {
                     );
                   },
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              DefectorRadio<bool>(
-                value: false,
-                label: 'Keyboard',
-                group: Game.useJoystick,
-                onChange: (value) {
-                  setState(() {
-                    Game.useJoystick = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              DefectorRadio<bool>(
-                value: true,
-                group: Game.useJoystick,
-                label: 'Joystick',
-                onChange: (value) {
-                  setState(() {
-                    Game.useJoystick = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              if (!Game.useJoystick)
-                SizedBox(
-                  height: 80,
-                  width: 200,
-                  child: Sprite.load('keyboard_tip.png').asWidget(),
-                ),
-            ],
-          ),
-        ),
+              ))
+        ],
       ),
     );
   }
@@ -146,28 +91,7 @@ class _MenuState extends State<Menu> {
         setState(() {
           showSplash = false;
         });
-        startTimer();
       },
     );
-  }
-
-  void startTimer() {
-    _timer = async.Timer.periodic(Duration(seconds: 2), (timer) {
-      setState(() {
-        currentPosition++;
-        if (currentPosition > sprites.length - 1) {
-          currentPosition = 0;
-        }
-      });
-    });
-  }
-
-  void _launchURL(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 }

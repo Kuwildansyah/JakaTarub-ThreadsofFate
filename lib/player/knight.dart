@@ -32,7 +32,7 @@ class Knight extends SimplePlayer with Lighting, BlockMovementCollision {
       ),
     );
     setupMovementByJoystick(
-      intencityEnabled: true,
+      intensityEnabled: true,
     );
   }
 
