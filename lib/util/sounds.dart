@@ -38,7 +38,7 @@ class Sounds {
 
   static void playBackgroundSound() async {
     await FlameAudio.bgm.stop();
-    FlameAudio.bgm.play('sound_bg.mp3');
+    FlameAudio.bgm.play('sound_bg_2.mp3');
   }
 
   static void playBackgroundBoosSound() {

@@ -1,6 +1,5 @@
 import 'dart:async' as async;
 
-import 'package:bonfire/bonfire.dart';
 import 'package:darkness_dungeon/game.dart';
 import 'package:darkness_dungeon/util/localization/strings_location.dart';
 import 'package:darkness_dungeon/util/sounds.dart';
